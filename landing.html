@@ -6,14 +6,25 @@
 <title>Odontoiatria Accessibile in Moldova</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
+
+  :root {
+    --tiffany:  #3ecfcb;
+    --tiffany2: #2bb5b1;
+    --tiffany3: #e6f9f8;
+    --tiffany4: #b2eceb;
+    --dark:     #1a3a39;
+    --text:     #2d4a49;
+    --muted:    #6b9896;
+    --white:    #ffffff;
+    --bg:       #f0fafa;
+  }
 
   body {
     font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    color: #f8fafc;
+    color: var(--text);
+    background: var(--bg);
     overflow-x: hidden;
-    background: #030712;
   }
 
   /* ── HERO ── */
@@ -25,17 +36,17 @@
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 60px 24px 80px;
+    padding: 60px 24px 90px;
     overflow: hidden;
   }
 
-  /* Dental clinic background images - parallax layers */
   .hero-bg {
     position: absolute;
     inset: 0;
     z-index: 0;
   }
 
+  /* Real dental clinic photo */
   .hero-bg::before {
     content: '';
     position: absolute;
@@ -43,24 +54,25 @@
     background-image: url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?w=1920&q=85&auto=format&fit=crop');
     background-size: cover;
     background-position: center 30%;
-    filter: brightness(.35) saturate(.8);
-    transform: scale(1.05);
     animation: slowZoom 20s ease-in-out infinite alternate;
   }
 
   @keyframes slowZoom {
-    from { transform: scale(1.05); }
-    to   { transform: scale(1.12); }
+    from { transform: scale(1.03); }
+    to   { transform: scale(1.09); }
   }
 
-  /* Dark gradient overlay */
+  /* Light tiffany overlay */
   .hero-bg::after {
     content: '';
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to bottom, rgba(3,7,18,.3) 0%, rgba(3,7,18,.1) 40%, rgba(3,7,18,.7) 80%, rgba(3,7,18,1) 100%),
-      linear-gradient(135deg, rgba(37,99,235,.2) 0%, transparent 50%, rgba(8,145,178,.15) 100%);
+      linear-gradient(160deg,
+        rgba(240,250,250,.92) 0%,
+        rgba(180,240,238,.82) 35%,
+        rgba(62,207,203,.55) 65%,
+        rgba(43,181,177,.75) 100%);
   }
 
   .hero-content { position: relative; z-index: 1; max-width: 820px; }
@@ -69,36 +81,40 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 7px 18px;
+    padding: 7px 20px;
     border-radius: 50px;
-    border: 1px solid rgba(96,165,250,.4);
-    background: rgba(37,99,235,.15);
-    backdrop-filter: blur(10px);
+    border: 1.5px solid rgba(62,207,203,.5);
+    background: rgba(255,255,255,.7);
+    backdrop-filter: blur(8px);
     font-size: 12px;
     letter-spacing: 1.8px;
     text-transform: uppercase;
-    color: #93c5fd;
+    color: var(--tiffany2);
+    font-weight: 600;
     margin-bottom: 32px;
-    animation: fadeDown .7s ease both;
+    animation: fadeDown .6s ease both;
   }
 
   h1 {
-    font-size: clamp(34px, 7vw, 68px);
+    font-size: clamp(34px, 7vw, 66px);
     font-weight: 900;
     line-height: 1.08;
     letter-spacing: -1.5px;
-    background: linear-gradient(135deg, #ffffff 0%, #bfdbfe 45%, #67e8f9 100%);
+    color: var(--dark);
+    margin-bottom: 24px;
+    animation: fadeDown .7s .1s ease both;
+  }
+
+  h1 span {
+    background: linear-gradient(135deg, #2bb5b1, #0a9e9a);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-    margin-bottom: 24px;
-    animation: fadeDown .7s .1s ease both;
-    text-shadow: none;
   }
 
   .subtitle {
-    font-size: clamp(16px, 2.5vw, 20px);
-    color: rgba(255,255,255,.75);
+    font-size: clamp(16px, 2.5vw, 19px);
+    color: var(--text);
     max-width: 600px;
     margin: 0 auto 36px;
     line-height: 1.65;
@@ -109,27 +125,25 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 32px;
+    padding: 13px 34px;
     border-radius: 50px;
-    background: linear-gradient(135deg, rgba(37,99,235,.9), rgba(8,145,178,.9));
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(96,165,250,.3);
-    font-size: 18px;
+    background: linear-gradient(135deg, var(--tiffany), var(--tiffany2));
+    font-size: 17px;
     font-weight: 700;
     color: #fff;
     animation: fadeDown .7s .3s ease both;
-    box-shadow: 0 0 50px rgba(37,99,235,.4), 0 0 100px rgba(37,99,235,.1);
+    box-shadow: 0 8px 32px rgba(62,207,203,.4);
   }
 
   .hero-scroll {
     position: absolute;
-    bottom: 32px;
-    left: 50%;
+    bottom: 36px; left: 50%;
     transform: translateX(-50%);
     z-index: 1;
     animation: bounce 2s ease-in-out infinite;
-    opacity: .5;
+    color: var(--tiffany2);
     font-size: 22px;
+    opacity: .7;
   }
 
   @keyframes bounce {
@@ -137,45 +151,30 @@
     50%       { transform: translateX(-50%) translateY(8px); }
   }
 
-  /* ── CARDS SECTION ── */
-  .section-wrap {
-    position: relative;
-    padding: 90px 24px;
-    overflow: hidden;
+  /* ── WAVE DIVIDER ── */
+  .wave {
+    display: block;
+    width: 100%;
+    margin-bottom: -2px;
+    background: var(--white);
   }
 
-  /* Dental equipment background — subtle, behind cards */
-  .section-wrap::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image: url('https://images.unsplash.com/photo-1588776814546-1ffbb1a6b7f1?w=1920&q=70&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    filter: brightness(.12) saturate(.5) blur(2px);
-    z-index: 0;
+  /* ── ADVANTAGES ── */
+  .section-cards {
+    background: var(--white);
+    padding: 80px 24px 90px;
   }
-
-  .section-wrap::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to bottom, rgba(3,7,18,1) 0%, rgba(3,7,18,.7) 30%, rgba(3,7,18,.7) 70%, rgba(3,7,18,1) 100%);
-    z-index: 0;
-  }
-
-  .section-inner { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; }
 
   .section-title {
     text-align: center;
-    font-size: clamp(24px, 4vw, 36px);
+    font-size: clamp(24px, 4vw, 34px);
     font-weight: 800;
-    color: #fff;
+    color: var(--dark);
     margin-bottom: 56px;
   }
 
   .section-title span {
-    background: linear-gradient(135deg, #60a5fa, #06b6d4);
+    background: linear-gradient(135deg, var(--tiffany), var(--tiffany2));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -185,71 +184,92 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     gap: 22px;
+    max-width: 1060px;
+    margin: 0 auto;
   }
 
   .card {
-    background: rgba(255,255,255,.04);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,.09);
+    background: var(--bg);
+    border: 1.5px solid var(--tiffany4);
     border-radius: 22px;
-    padding: 38px 30px;
+    padding: 38px 28px;
     position: relative;
     overflow: hidden;
-    transition: transform .3s, box-shadow .3s, border-color .3s;
+    transition: transform .3s, box-shadow .3s;
   }
 
   .card::before {
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--line, #3b82f6), transparent);
-    opacity: 0;
-    transition: opacity .3s;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--accent, var(--tiffany)), transparent);
   }
 
   .card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 24px 60px rgba(0,0,0,.5);
-    border-color: rgba(255,255,255,.18);
+    transform: translateY(-6px);
+    box-shadow: 0 16px 50px rgba(62,207,203,.15);
   }
-  .card:hover::before { opacity: 1; }
-
-  .card.c1 { --line: #3b82f6; }
-  .card.c2 { --line: #10b981; }
-  .card.c3 { --line: #f59e0b; }
 
   .card-icon {
     width: 64px; height: 64px;
     border-radius: 18px;
+    background: var(--tiffany3);
     display: flex; align-items: center; justify-content: center;
     font-size: 30px;
     margin-bottom: 22px;
   }
-  .c1 .card-icon { background: rgba(59,130,246,.15); box-shadow: 0 0 30px rgba(59,130,246,.2); }
-  .c2 .card-icon { background: rgba(16,185,129,.15); box-shadow: 0 0 30px rgba(16,185,129,.2); }
-  .c3 .card-icon { background: rgba(245,158,11,.15); box-shadow: 0 0 30px rgba(245,158,11,.2); }
 
   .card h3 {
     font-size: 17px;
     font-weight: 700;
     margin-bottom: 12px;
-    color: #fff;
+    color: var(--dark);
     line-height: 1.35;
   }
 
   .card p {
     font-size: 14px;
-    color: rgba(255,255,255,.5);
+    color: var(--muted);
     line-height: 1.75;
   }
 
-  .card p strong { color: rgba(255,255,255,.85); }
+  .card p strong { color: var(--text); }
+
+  /* ── STATS BAR ── */
+  .stats {
+    background: linear-gradient(135deg, var(--tiffany2), #0a9e9a);
+    padding: 50px 24px;
+  }
+
+  .stats-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 32px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-size: 46px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,.75);
+    letter-spacing: .5px;
+    text-transform: uppercase;
+  }
 
   /* ── FOR WHOM ── */
-  .for-whom-wrap {
-    position: relative;
-    padding: 0 24px 90px;
+  .for-whom {
+    background: var(--bg);
+    padding: 80px 24px;
   }
 
   .for-whom-inner {
@@ -261,17 +281,13 @@
   .for-whom-inner h2 {
     font-size: clamp(22px, 4vw, 30px);
     font-weight: 800;
-    margin-bottom: 32px;
-    background: linear-gradient(135deg, #93c5fd, #06b6d4);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    margin-bottom: 36px;
+    color: var(--dark);
   }
 
   .fw-box {
-    background: rgba(255,255,255,.03);
-    backdrop-filter: blur(16px);
-    border: 1px solid rgba(255,255,255,.08);
+    background: var(--white);
+    border: 1.5px solid var(--tiffany4);
     border-radius: 22px;
     padding: 36px;
     text-align: left;
@@ -282,31 +298,27 @@
     gap: 16px;
     align-items: flex-start;
     padding: 14px 0;
-    border-bottom: 1px solid rgba(255,255,255,.05);
+    border-bottom: 1px solid var(--tiffany3);
   }
   .fw-row:last-child { border-bottom: none; padding-bottom: 0; }
   .fw-row:first-child { padding-top: 0; }
 
   .fw-num {
-    width: 30px; height: 30px;
+    width: 32px; height: 32px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1d4ed8, #0891b2);
+    background: linear-gradient(135deg, var(--tiffany), var(--tiffany2));
     display: flex; align-items: center; justify-content: center;
     font-size: 13px;
     font-weight: 700;
+    color: #fff;
     flex-shrink: 0;
     margin-top: 2px;
   }
 
-  .fw-row p {
-    font-size: 15px;
-    color: rgba(255,255,255,.65);
-    line-height: 1.65;
-  }
+  .fw-row p { font-size: 15px; color: var(--muted); line-height: 1.65; }
+  .fw-row p strong { color: var(--dark); }
 
-  .fw-row p strong { color: #fff; }
-
-  /* ── CTA SECTION ── */
+  /* ── CTA ── */
   .cta-wrap {
     position: relative;
     padding: 100px 24px;
@@ -316,22 +328,18 @@
 
   .cta-wrap::before {
     content: '';
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     background-image: url('https://images.unsplash.com/photo-1588776814546-1ffbb1a6b7f1?w=1920&q=70&auto=format&fit=crop');
     background-size: cover;
     background-position: center 60%;
-    filter: brightness(.2) saturate(.6) blur(1px);
+    filter: brightness(.15) saturate(.4);
     z-index: 0;
   }
 
   .cta-wrap::after {
     content: '';
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom, rgba(3,7,18,1) 0%, rgba(3,7,18,.5) 30%, rgba(3,7,18,.5) 70%, rgba(3,7,18,1) 100%),
-      radial-gradient(ellipse 70% 60% at 50% 50%, rgba(37,99,235,.15) 0%, transparent 70%);
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, rgba(240,250,250,.97) 0%, rgba(200,245,243,.9) 40%, rgba(62,207,203,.3) 100%);
     z-index: 0;
   }
 
@@ -340,12 +348,13 @@
   .cta-wrap h2 {
     font-size: clamp(24px, 5vw, 40px);
     font-weight: 900;
-    margin-bottom: 14px;
+    color: var(--dark);
+    margin-bottom: 12px;
     letter-spacing: -.5px;
   }
 
-  .cta-wrap > .cta-inner > p {
-    color: rgba(255,255,255,.55);
+  .cta-wrap p {
+    color: var(--muted);
     font-size: 16px;
     margin-bottom: 44px;
   }
@@ -355,153 +364,161 @@
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    padding: 20px 50px;
+    padding: 20px 52px;
     border-radius: 50px;
     border: none;
     cursor: pointer;
     font-size: 18px;
     font-weight: 700;
-    letter-spacing: .2px;
     color: #fff;
-    background: linear-gradient(135deg, #1d4ed8 0%, #0891b2 100%);
-    box-shadow: 0 6px 40px rgba(29,78,216,.55);
+    background: linear-gradient(135deg, var(--tiffany), var(--tiffany2));
+    box-shadow: 0 8px 40px rgba(62,207,203,.5);
     text-decoration: none;
     transition: transform .2s, box-shadow .2s;
   }
 
   .cta-btn:hover {
     transform: translateY(-4px) scale(1.03);
-    box-shadow: 0 16px 50px rgba(29,78,216,.7);
+    box-shadow: 0 16px 50px rgba(62,207,203,.6);
   }
 
-  .pulse {
-    position: absolute; inset: -4px;
-    border-radius: 54px;
-    border: 2px solid rgba(59,130,246,.5);
-    animation: pulseRing 2s ease-out infinite;
-  }
-
-  .pulse2 {
-    position: absolute; inset: -4px;
-    border-radius: 54px;
-    border: 2px solid rgba(59,130,246,.3);
-    animation: pulseRing 2s .6s ease-out infinite;
-  }
+  .pulse  { position: absolute; inset: -4px; border-radius: 54px; border: 2px solid rgba(62,207,203,.6); animation: pulseRing 2s ease-out infinite; }
+  .pulse2 { position: absolute; inset: -4px; border-radius: 54px; border: 2px solid rgba(62,207,203,.3); animation: pulseRing 2s .7s ease-out infinite; }
 
   @keyframes pulseRing {
-    0%   { transform: scale(1);   opacity: .8; }
-    100% { transform: scale(1.2); opacity: 0; }
+    0%   { transform: scale(1);   opacity: .9; }
+    100% { transform: scale(1.25); opacity: 0; }
   }
 
   .contact-note {
     display: block;
     margin-top: 24px;
     font-size: 13px;
-    color: rgba(255,255,255,.25);
+    color: var(--muted);
     text-decoration: none;
     transition: color .2s;
   }
-  .contact-note:hover { color: rgba(255,255,255,.6); }
+  .contact-note:hover { color: var(--tiffany2); }
 
   /* ── ANIMATIONS ── */
   @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-24px); }
+    from { opacity: 0; transform: translateY(-20px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 640px) {
-    h1 { letter-spacing: -.5px; }
     .cards { grid-template-columns: 1fr; }
-    .fw-box { padding: 24px 18px; }
+    .fw-box { padding: 22px 16px; }
     .cta-btn { padding: 16px 36px; font-size: 16px; }
-    .section-wrap { padding: 70px 16px; }
+    .stats-inner { grid-template-columns: repeat(2, 1fr); }
   }
 </style>
 </head>
 <body>
 
-<!-- ══ HERO ══ -->
+<!-- HERO -->
 <section class="hero">
   <div class="hero-bg"></div>
   <div class="hero-content">
-    <div class="badge"><span>🦷</span> Odontoiatria Accessibile</div>
-    <h1>Sorriso Perfetto.<br>Prezzo Impossibile in Italia.</h1>
+    <div class="badge">🦷 Odontoiatria Accessibile</div>
+    <h1>Sorriso Perfetto.<br><span>Prezzo Impossibile in Italia.</span></h1>
     <p class="subtitle">
       Qualità odontoiatrica europea di alto livello in Moldova —
-      con un risparmio reale fino al <strong style="color:#67e8f9">50%</strong>
+      con un risparmio reale fino al <strong>50%</strong>
       rispetto ai prezzi italiani, volo e soggiorno inclusi.
     </p>
     <div class="discount-pill">
-      ✈️ &nbsp;Volo + Soggiorno + Cure = <span style="color:#bfdbfe;margin-left:6px">−40% / −50%</span>&nbsp; vs Italia
+      ✈️ &nbsp;Volo + Soggiorno + Cure = −40% / −50% vs Italia
     </div>
   </div>
   <div class="hero-scroll">↓</div>
 </section>
 
-<!-- ══ ADVANTAGES ══ -->
-<section class="section-wrap">
-  <div class="section-inner">
-    <div class="section-title">Perché scegliere la <span>Moldova?</span></div>
-    <div class="cards">
+<!-- WAVE -->
+<svg class="wave" viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" height="60">
+  <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z" fill="#ffffff"/>
+</svg>
 
-      <div class="card c1">
-        <div class="card-icon">🏆</div>
-        <h3>Unico paese al mondo con accreditamento ADA</h3>
-        <p>La Moldova è l'<strong>unico paese al mondo</strong> con accreditamento attivo
-           dell'American Dental Association — lo stesso standard degli USA e del Nord Europa.</p>
-      </div>
+<!-- ADVANTAGES -->
+<section class="section-cards">
+  <div class="section-title">Perché scegliere la <span>Moldova?</span></div>
+  <div class="cards">
 
-      <div class="card c2">
-        <div class="card-icon">💰</div>
-        <h3>Risparmio reale del 40–50%</h3>
-        <p>Volo, hotel e cure dentali messi insieme costano ancora
-           il <strong>40–50% in meno</strong> rispetto ai soli trattamenti in Italia.
-           Un sorriso completamente nuovo a metà prezzo.</p>
-      </div>
-
-      <div class="card c3">
-        <div class="card-icon">👨‍⚕️</div>
-        <h3>Solo dentisti con 10+ anni di esperienza</h3>
-        <p>Ogni trattamento è eseguito esclusivamente da
-           <strong>specialisti con oltre 10 anni</strong>
-           di pratica clinica certificata. Nessun compromesso.</p>
-      </div>
-
+    <div class="card">
+      <div class="card-icon">🏆</div>
+      <h3>Unico paese al mondo con accreditamento ADA</h3>
+      <p>La Moldova è l'<strong>unico paese al mondo</strong> con accreditamento attivo
+         dell'American Dental Association — lo stesso standard degli USA.</p>
     </div>
+
+    <div class="card">
+      <div class="card-icon">💰</div>
+      <h3>Risparmio reale del 40–50%</h3>
+      <p>Volo, hotel e cure dentali messi insieme costano ancora il
+         <strong>40–50% in meno</strong> rispetto ai soli trattamenti in Italia.
+         Un sorriso nuovo a metà prezzo.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-icon">👨‍⚕️</div>
+      <h3>Solo dentisti con 10+ anni di esperienza</h3>
+      <p>Ogni trattamento è eseguito esclusivamente da
+         <strong>specialisti con oltre 10 anni</strong>
+         di pratica clinica certificata. Zero compromessi.</p>
+    </div>
+
   </div>
 </section>
 
-<!-- ══ FOR WHOM ══ -->
-<div class="for-whom-wrap">
+<!-- STATS -->
+<div class="stats">
+  <div class="stats-inner">
+    <div>
+      <div class="stat-num">−50%</div>
+      <div class="stat-label">Risparmio medio</div>
+    </div>
+    <div>
+      <div class="stat-num">10+</div>
+      <div class="stat-label">Anni di esperienza</div>
+    </div>
+    <div>
+      <div class="stat-num">#1</div>
+      <div class="stat-label">Accreditamento ADA</div>
+    </div>
+    <div>
+      <div class="stat-num">✈️</div>
+      <div class="stat-label">Pacchetto completo</div>
+    </div>
+  </div>
+</div>
+
+<!-- FOR WHOM -->
+<div class="for-whom">
   <div class="for-whom-inner">
     <h2>Per chi è pensato questo servizio?</h2>
     <div class="fw-box">
       <div class="fw-row">
         <div class="fw-num">1</div>
-        <p><strong>Cittadini italiani</strong> che vogliono cure dentali di qualità europea
-           senza pagare prezzi italiani.</p>
+        <p><strong>Cittadini italiani</strong> che desiderano cure odontoiatriche di qualità europea a prezzi del <strong>−50% rispetto all'Italia</strong>.</p>
       </div>
       <div class="fw-row">
         <div class="fw-num">2</div>
-        <p>Chi ha bisogno di <strong>impianti, corone, faccette o protesi complete</strong>
-           e vuole risparmiare migliaia di euro senza rinunciare agli standard.</p>
+        <p>Chi ha bisogno di <strong>impianti, corone, faccette o protesi</strong> e vuole risparmiare migliaia di euro.</p>
       </div>
       <div class="fw-row">
         <div class="fw-num">3</div>
-        <p>Chi cerca un <strong>pacchetto completo</strong>: volo, hotel confortevole
-           e trattamento dentale — tutto organizzato in una soluzione.</p>
+        <p>Chi cerca un <strong>pacchetto completo</strong>: volo, hotel confortevole e trattamento dentale tutto incluso.</p>
       </div>
       <div class="fw-row">
         <div class="fw-num">4</div>
-        <p>Chi esige <strong>garanzie internazionali</strong>: accreditamento ADA,
-           medici esperti e materiali certificati di prima qualità.</p>
+        <p>Chi esige <strong>garanzie internazionali</strong>: accreditamento ADA, medici esperti, materiali certificati.</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ══ CTA ══ -->
+<!-- CTA -->
 <div class="cta-wrap">
   <div class="cta-inner">
     <h2>Pronto per il tuo nuovo sorriso?</h2>
