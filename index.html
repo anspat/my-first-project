@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подберём нейросотрудника под ваш бизнес</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f0f13;
+      color: #e8e8f0;
+      min-height: 100vh;
+      padding: 40px 16px 60px;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 6px 16px;
+      border-radius: 20px;
+      margin-bottom: 20px;
+      letter-spacing: 0.5px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 5vw, 36px);
+      font-weight: 700;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, #6366f1, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      color: #8888a8;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+
+    .progress-bar {
+      background: #1e1e2e;
+      border-radius: 4px;
+      height: 4px;
+      margin-bottom: 40px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #6366f1, #a78bfa);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    .question-block {
+      background: #16161f;
+      border: 1px solid #2a2a3d;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 20px;
+      transition: border-color 0.2s;
+    }
+
+    .question-block:focus-within {
+      border-color: rgba(99, 102, 241, 0.5);
+    }
+
+    .question-number {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6366f1;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .question-text {
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 18px;
+      line-height: 1.4;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .option-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #0f0f18;
+      border: 1px solid #2a2a3d;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-size: 15px;
+      color: #c8c8e0;
+      user-select: none;
+    }
+
+    .option-label:hover {
+      border-color: rgba(99, 102, 241, 0.5);
+      background: rgba(99, 102, 241, 0.05);
+      color: #ffffff;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #3a3a55;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: all 0.15s;
+      position: relative;
+      cursor: pointer;
+    }
+
+    input[type="checkbox"] {
+      border-radius: 5px;
+    }
+
+    input[type="radio"]:checked,
+    input[type="checkbox"]:checked {
+      background: #6366f1;
+      border-color: #6366f1;
+    }
+
+    input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: white;
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    input[type="radio"]:checked + span,
+    input[type="checkbox"]:checked + span {
+      color: #ffffff;
+    }
+
+    .option-label:has(input:checked) {
+      border-color: rgba(99, 102, 241, 0.6);
+      background: rgba(99, 102, 241, 0.08);
+    }
+
+    .text-field {
+      margin-top: 8px;
+    }
+
+    .text-field input,
+    .text-field textarea {
+      width: 100%;
+      background: #0f0f18;
+      border: 1px solid #2a2a3d;
+      border-radius: 10px;
+      padding: 12px 16px;
+      color: #e8e8f0;
+      font-size: 15px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .text-field input:focus,
+    .text-field textarea:focus {
+      border-color: rgba(99, 102, 241, 0.6);
+    }
+
+    .text-field input::placeholder,
+    .text-field textarea::placeholder {
+      color: #4a4a6a;
+    }
+
+    .text-field label {
+      display: block;
+      font-size: 14px;
+      color: #8888a8;
+      margin-bottom: 8px;
+    }
+
+    .contacts-block {
+      background: #16161f;
+      border: 1px solid #2a2a3d;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .contacts-title {
+      font-size: 17px;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 18px;
+      background: linear-gradient(135deg, #6366f1, #7c3aed);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 17px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      letter-spacing: 0.3px;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.35);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .privacy {
+      text-align: center;
+      font-size: 13px;
+      color: #4a4a6a;
+      margin-top: 14px;
+    }
+
+    .success {
+      display: none;
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .success-icon {
+      font-size: 56px;
+      margin-bottom: 20px;
+    }
+
+    .success h2 {
+      font-size: 26px;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 12px;
+    }
+
+    .success p {
+      color: #8888a8;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 480px) {
+      .question-block, .contacts-block {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="badge">Бесплатная диагностика</div>
+    <h1>Подберём <span>нейросотрудника</span><br>под ваш бизнес</h1>
+    <p class="subtitle">8 вопросов — и вы получите точный расчёт, как ИИ закроет ваши пробелы в продажах</p>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress"></div>
+  </div>
+
+  <form id="quiz-form">
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 1 из 8</div>
+      <div class="question-text">Сфера вашего бизнеса</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q1" value="retail"> <span>Розница / магазин</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q1" value="services"> <span>Услуги</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q1" value="online"> <span>Онлайн-продажи</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q1" value="other"> <span>Другое</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 2 из 8</div>
+      <div class="question-text">Сколько заявок вы получаете в месяц?</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q2" value="lt30"> <span>До 30</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q2" value="30-100"> <span>30–100</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q2" value="100-300"> <span>100–300</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q2" value="gt300"> <span>Больше 300</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 3 из 8</div>
+      <div class="question-text">Кто сейчас обрабатывает заявки?</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q3" value="myself"> <span>Я сам(а)</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q3" value="one"> <span>Один менеджер</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q3" value="team"> <span>Несколько менеджеров</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q3" value="lost"> <span>Часть заявок теряется — некому отвечать</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 4 из 8</div>
+      <div class="question-text">Как быстро отвечаете на новую заявку?</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q4" value="15min"> <span>В течение 15 минут</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q4" value="1hour"> <span>В течение часа</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q4" value="fewHours"> <span>Несколько часов или на следующий день</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q4" value="never"> <span>Бывает, не отвечаем вовсе</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 5 из 8</div>
+      <div class="question-text">Через какие каналы приходят клиенты? <small style="color:#6366f1;font-size:12px;">(можно несколько)</small></div>
+      <div class="options">
+        <label class="option-label">
+          <input type="checkbox" name="q5" value="instagram"> <span>Instagram / Facebook</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="q5" value="site"> <span>Сайт</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="q5" value="telegram"> <span>Telegram</span>
+        </label>
+        <label class="option-label">
+          <input type="checkbox" name="q5" value="calls"> <span>Звонки</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 6 из 8</div>
+      <div class="question-text">Что чаще всего мешает закрыть сделку?</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q6" value="slow"> <span>Долго отвечаем</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q6" value="ghost"> <span>Клиент уходит думать и пропадает</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q6" value="manager"> <span>Менеджер не дожимает</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q6" value="price"> <span>Цена</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 7 из 8</div>
+      <div class="question-text">Какой результат хотите через месяц?</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q7" value="more_sales"> <span>Больше закрытых сделок</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q7" value="less_load"> <span>Меньше нагрузки на менеджеров</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q7" value="247"> <span>Работа с заявками 24/7</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q7" value="all"> <span>Всё вместе</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="question-block">
+      <div class="question-number">Вопрос 8 из 8</div>
+      <div class="question-text">Бюджет на решение (в месяц)</div>
+      <div class="options">
+        <label class="option-label">
+          <input type="radio" name="q8" value="lt100"> <span>До $100</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q8" value="100-300"> <span>$100–300</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q8" value="300-600"> <span>$300–600</span>
+        </label>
+        <label class="option-label">
+          <input type="radio" name="q8" value="custom"> <span>Готов обсудить индивидуально</span>
+        </label>
+      </div>
+    </div>
+
+    <div class="contacts-block">
+      <div class="contacts-title">Куда отправить результат?</div>
+      <div class="text-field">
+        <label>Ваше имя</label>
+        <input type="text" name="name" placeholder="Иван Петров" required>
+      </div>
+      <div class="text-field">
+        <label>Телефон или Telegram</label>
+        <input type="text" name="contact" placeholder="+373 xxx xxxx или @username" required>
+      </div>
+    </div>
+
+    <button type="submit" class="submit-btn">Получить бесплатный разбор →</button>
+    <p class="privacy">Нажимая кнопку, вы соглашаетесь на обработку персональных данных</p>
+
+  </form>
+
+  <div class="success" id="success">
+    <div class="success-icon">🎯</div>
+    <h2>Заявка принята!</h2>
+    <p>Свяжемся с вами в течение 24 часов<br>и разберём, как нейросотрудник<br>увеличит ваши продажи.</p>
+  </div>
+
+</div>
+
+<script>
+  const form = document.getElementById('quiz-form');
+  const progressFill = document.getElementById('progress');
+  const totalQuestions = 8;
+
+  function updateProgress() {
+    const answered = new Set();
+    form.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+      answered.add(el.name);
+    });
+    form.querySelectorAll('input[type="checkbox"]:checked').forEach(el => {
+      answered.add(el.name);
+    });
+    const pct = Math.min((answered.size / totalQuestions) * 100, 100);
+    progressFill.style.width = pct + '%';
+  }
+
+  form.addEventListener('change', updateProgress);
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const data = {};
+    new FormData(form).forEach((val, key) => {
+      if (data[key]) {
+        data[key] = [].concat(data[key], val);
+      } else {
+        data[key] = val;
+      }
+    });
+
+    console.log('Form data:', JSON.stringify(data, null, 2));
+
+    form.style.display = 'none';
+    document.getElementById('success').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
+
+</body>
+</html>
