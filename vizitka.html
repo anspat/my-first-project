@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Спатарь Андрей</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold:   #c9a84c;
+    --gold2:  #f0d080;
+    --accent: #e8b84b;
+    --glow:   rgba(201,168,76,.35);
+  }
+
+  body {
+    min-height: 100vh;
+    background: #0a0a0a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    overflow: hidden;
+  }
+
+  /* ── ambient background ── */
+  .bg {
+    position: fixed; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 20%, rgba(201,168,76,.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 80%, rgba(201,168,76,.04) 0%, transparent 60%);
+  }
+
+  /* floating particles */
+  .particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .p {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: float linear infinite;
+  }
+
+  @keyframes float {
+    0%   { transform: translateY(100vh) scale(0); opacity: 0; }
+    10%  { opacity: .4; }
+    90%  { opacity: .15; }
+    100% { transform: translateY(-10vh) scale(1); opacity: 0; }
+  }
+
+  /* ── card ── */
+  .card {
+    position: relative; z-index: 1;
+    width: min(420px, 92vw);
+    padding: 52px 40px 44px;
+    border-radius: 24px;
+    background: linear-gradient(145deg, #141414 0%, #0e0e0e 100%);
+    border: 1px solid rgba(201,168,76,.18);
+    box-shadow:
+      0 0 0 1px rgba(201,168,76,.06),
+      0 24px 60px rgba(0,0,0,.7),
+      0 0 80px rgba(201,168,76,.05);
+    text-align: center;
+    animation: cardIn .7s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes cardIn {
+    from { opacity: 0; transform: translateY(30px) scale(.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* top line decoration */
+  .card::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 60%; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  /* ── avatar ring ── */
+  .avatar-wrap {
+    width: 90px; height: 90px;
+    margin: 0 auto 28px;
+    position: relative;
+  }
+  .avatar-ring {
+    position: absolute; inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(var(--gold), var(--gold2), var(--gold));
+    animation: spin 6s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .avatar-inner {
+    position: absolute; inset: 3px;
+    border-radius: 50%;
+    background: #111;
+    overflow: hidden;
+  }
+  .avatar-inner img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+  }
+
+  /* ── name ── */
+  .name {
+    font-size: clamp(22px, 6vw, 30px);
+    font-weight: 800;
+    letter-spacing: .5px;
+    line-height: 1.15;
+    background: linear-gradient(270deg, #a855f7, #3b82f6, #818cf8, #c084fc, #60a5fa, #a855f7);
+    background-size: 300% 300%;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: nameShimmer 4s ease infinite, glow 3s ease-in-out infinite alternate;
+    margin-bottom: 6px;
+  }
+  @keyframes nameShimmer {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes glow {
+    from { filter: drop-shadow(0 0 10px rgba(139,92,246,.4)); }
+    to   { filter: drop-shadow(0 0 26px rgba(99,102,241,.8)); }
+  }
+
+  /* ── divider ── */
+  .divider {
+    width: 40px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 16px auto;
+    border-radius: 2px;
+  }
+
+  /* ── specialization ── */
+  .spec {
+    font-size: 13px;
+    line-height: 1.6;
+    color: rgba(255,255,255,.55);
+    max-width: 300px;
+    margin: 0 auto 28px;
+    letter-spacing: .2px;
+  }
+  .spec strong {
+    color: rgba(255,255,255,.8);
+    font-weight: 500;
+  }
+
+  /* ── social icons ── */
+  .socials {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 32px;
+  }
+
+  .social-btn {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.04);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    position: relative;
+    transition: transform .25s, border-color .25s, background .25s, box-shadow .25s;
+    overflow: hidden;
+  }
+  .social-btn::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gradient, linear-gradient(135deg, var(--gold), var(--gold2)));
+    opacity: 0;
+    transition: opacity .25s;
+    border-radius: inherit;
+  }
+  .social-btn:hover {
+    transform: translateY(-4px) scale(1.08);
+    border-color: transparent;
+    box-shadow: 0 8px 24px var(--glow-clr, var(--glow));
+  }
+  .social-btn:hover::before { opacity: 1; }
+  .social-btn svg {
+    position: relative; z-index: 1;
+    transition: fill .25s;
+  }
+  .social-btn:hover svg { fill: #0a0a0a; }
+
+  .social-btn.tg   { --gradient: linear-gradient(135deg,#2aabee,#229ed9); --glow-clr: rgba(42,171,238,.4); }
+  .social-btn.wa   { --gradient: linear-gradient(135deg,#25d366,#128c7e); --glow-clr: rgba(37,211,102,.4); }
+  .social-btn.inst { --gradient: linear-gradient(135deg,#fd5949,#d6249f,#285aeb); --glow-clr: rgba(214,36,159,.4); }
+  .social-btn.vk   { --gradient: linear-gradient(135deg,#4a76a8,#2787f5); --glow-clr: rgba(39,135,245,.4); }
+
+  /* ── CTA button ── */
+  .cta {
+    display: inline-flex;
+    align-items: center; gap: 10px;
+    padding: 14px 32px;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: .3px;
+    color: #0a0a0a;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold2) 100%);
+    box-shadow: 0 4px 20px rgba(201,168,76,.3);
+    position: relative;
+    overflow: hidden;
+    transition: transform .2s, box-shadow .2s;
+    text-decoration: none;
+  }
+  .cta::after {
+    content: '';
+    position: absolute; top: 50%; left: 50%;
+    width: 0; height: 0;
+    background: rgba(255,255,255,.25);
+    border-radius: 50%;
+    transform: translate(-50%,-50%);
+    transition: width .5s, height .5s, opacity .5s;
+    opacity: 0;
+  }
+  .cta:hover {
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 8px 32px rgba(201,168,76,.5);
+  }
+  .cta:active::after { width: 200px; height: 200px; opacity: 0; }
+  .cta:active { transform: scale(.98); }
+
+  .pulse-ring {
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    border: 2px solid var(--gold);
+    animation: pulse-out 2.5s ease-out infinite;
+  }
+  @keyframes pulse-out {
+    0%   { transform: scale(1);    opacity: .6; }
+    100% { transform: scale(1.25); opacity: 0; }
+  }
+
+  /* ── footer tag ── */
+  .tag {
+    margin-top: 28px;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,.15);
+  }
+
+  /* ── responsive ── */
+  @media (max-width: 400px) {
+    .card { padding: 40px 24px 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg"></div>
+
+<!-- particles -->
+<div class="particles" id="particles"></div>
+
+<div class="card">
+
+  <!-- avatar -->
+  <div class="avatar-wrap">
+    <div class="avatar-ring"></div>
+    <div class="avatar-inner">
+      <img src="813408cdce91897b3710da9dfae030ad_5b0cea4e-857f-43c0-a195-a349f81186af.png" alt="Андрей Спатарь">
+    </div>
+  </div>
+
+  <!-- name -->
+  <div class="name">Спатарь Андрей</div>
+
+  <div class="divider"></div>
+
+  <!-- specialization -->
+  <p class="spec">
+    <strong>Розничная торговля</strong> мебелью из дерева<br>
+    и ортопедическими матрасами
+  </p>
+
+  <!-- social icons -->
+  <div class="socials">
+
+    <!-- Telegram -->
+    <a class="social-btn tg" href="https://t.me/anspat" target="_blank" rel="noopener" title="Telegram">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,.75)">
+        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+      </svg>
+    </a>
+
+    <!-- WhatsApp -->
+    <a class="social-btn wa" href="https://wa.me/37369000000" target="_blank" rel="noopener" title="WhatsApp">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,.75)">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+      </svg>
+    </a>
+
+    <!-- Instagram -->
+    <a class="social-btn inst" href="https://instagram.com/" target="_blank" rel="noopener" title="Instagram">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,.75)">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+      </svg>
+    </a>
+
+    <!-- VK -->
+    <a class="social-btn vk" href="https://vk.com/" target="_blank" rel="noopener" title="ВКонтакте">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="rgba(255,255,255,.75)">
+        <path d="M15.684 0H8.316C1.592 0 0 1.592 0 8.316v7.368C0 22.408 1.592 24 8.316 24h7.368C22.408 24 24 22.408 24 15.684V8.316C24 1.592 22.408 0 15.684 0zm3.692 17.123h-1.744c-.66 0-.862-.525-2.049-1.714-1.033-1-1.49-.089-1.49 1.061 0 .369-.124.558-.584.558H12.44c-2.509 0-5.315-1.539-7.285-4.438-2.953-4.198-3.762-7.353-3.762-8.012 0-.297.102-.553.396-.553h1.744c.608 0 .713.297.91.865.977 2.87 2.618 5.396 3.307 5.396.254 0 .381-.124.381-.8V7.778c-.089-1.423-.837-1.543-.837-2.049 0-.243.194-.484.508-.484h2.748c.508 0 .686.27.686.864v4.641c0 .508.218.685.355.685.254 0 .476-.177.952-.653 1.477-1.657 2.528-4.218 2.528-4.218.14-.297.38-.558.987-.558h1.744c.527 0 .641.27.527.66-.22 1.023-2.392 4.094-2.392 4.094-.19.317-.254.456 0 .8.19.27.813.813 1.23 1.31.76.878 1.34 1.614 1.497 2.12.165.506-.089.762-.588.762z"/>
+      </svg>
+    </a>
+
+  </div>
+
+  <!-- CTA -->
+  <a class="cta" href="https://t.me/anspat" target="_blank" rel="noopener">
+    <div class="pulse-ring"></div>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="#0a0a0a" style="flex-shrink:0">
+      <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.96 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+    </svg>
+    Написать мне
+  </a>
+
+  <div class="tag">Мебель · Матрасы · Молдова</div>
+
+</div>
+
+<script>
+  // generate particles
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 18; i++) {
+    const p = document.createElement('div');
+    p.className = 'p';
+    const size = Math.random() * 3 + 1;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*12+8}s;
+      animation-delay:${Math.random()*10}s;
+    `;
+    container.appendChild(p);
+  }
+
+  // ripple on CTA click
+  document.querySelector('.cta').addEventListener('click', function(e) {
+    const r = document.createElement('span');
+    r.style.cssText = `
+      position:absolute;border-radius:50%;
+      width:4px;height:4px;
+      background:rgba(255,255,255,.5);
+      top:${e.offsetY}px;left:${e.offsetX}px;
+      transform:translate(-50%,-50%) scale(0);
+      animation:ripple .6s ease-out forwards;
+      pointer-events:none;
+    `;
+    this.appendChild(r);
+    setTimeout(()=>r.remove(), 700);
+  });
+
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes ripple {
+      to { transform:translate(-50%,-50%) scale(60); opacity:0; }
+    }
+  `;
+  document.head.appendChild(style);
+</script>
+</body>
+</html>
